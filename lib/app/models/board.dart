@@ -28,4 +28,12 @@ class Board {
     }
     return '';
   }
+
+  BoardRow get lastRow {
+    return _boardRows.last;
+  }
+
+  List<BoardRow> get rows {
+    return _boardRows;
+  }
 }

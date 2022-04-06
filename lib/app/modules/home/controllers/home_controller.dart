@@ -1,18 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:wordle/app/models/board.dart';
 import 'package:wordle/app/services/generator.dart';
 
 class HomeController extends GetxController {
-  late final String wordOfTheDay;
-  final word = <String>[].obs;
   final keyPressed = ''.obs;
-  int currentIndex = 0;
+  late final Rx<Board> board;
 
   @override
   void onInit() {
-    wordOfTheDay = Generator().generateWordOfTheDay();
-    word.value = List<String>.filled(wordOfTheDay.length, '');
+    board = Board(Generator().generateWordOfTheDay()).obs;
     super.onInit();
   }
 
@@ -22,16 +20,19 @@ class HomeController extends GetxController {
       keyPressed.value = key.keyLabel;
       debugPrint(key.keyLabel);
       if (RegExp(r'^[A-Z]$').hasMatch(key.keyLabel.toUpperCase())) {
-        if (currentIndex <= wordOfTheDay.length) {
-          word[currentIndex] = key.keyLabel;
-          currentIndex += 1;
-        }
-      } else if (key == LogicalKeyboardKey.enter) {
+        board.update((val) {
+          if (val != null) {
+            val.lastRow.inputChar(key.keyLabel);
+          }
+        });
       } else if (key == LogicalKeyboardKey.backspace) {
-        if (currentIndex > 0) {
-          currentIndex -= 1;
-          word[currentIndex] = '';
-        }
+        board.update((val) {
+          if (val != null) {
+            val.lastRow.removeChar();
+          }
+        });
+      } else if (key == LogicalKeyboardKey.enter) {
+        board.value.submit();
       }
     }
   }

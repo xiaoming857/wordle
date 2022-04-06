@@ -1,23 +1,30 @@
 class BoardRow {
-  late final List<String> _characters;
   late final int maxLength;
+  late final List<String> _characters;
+  int currentIndex = 0;
+
+  List<String> get characters {
+    return _characters;
+  }
 
   BoardRow(String wordle) : assert(wordle.isNotEmpty) {
-    _characters = List.empty(growable: true);
     maxLength = wordle.length;
+    _characters = List.filled(maxLength, '');
   }
 
   bool inputChar(String character) {
-    if (_characters.length < maxLength) {
-      _characters.add(character);
+    if (currentIndex <= maxLength) {
+      _characters[currentIndex] = character;
+      currentIndex += 1;
       return true;
     }
     return false;
   }
 
   bool removeChar() {
-    if (_characters.isNotEmpty) {
-      _characters.removeLast();
+    if (currentIndex > 0) {
+      currentIndex -= 1;
+      _characters[currentIndex] = '';
       return true;
     }
     return false;
