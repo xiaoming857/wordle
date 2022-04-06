@@ -1,11 +1,9 @@
 class BoardRow {
   late final int maxLength;
   late final List<String> _characters;
-  int currentIndex = 0;
+  int currentCharIndex = 0;
 
-  List<String> get characters {
-    return _characters;
-  }
+  String charAt(int i) => _characters[i];
 
   BoardRow(String wordle) : assert(wordle.isNotEmpty) {
     maxLength = wordle.length;
@@ -13,18 +11,18 @@ class BoardRow {
   }
 
   bool inputChar(String character) {
-    if (currentIndex <= maxLength) {
-      _characters[currentIndex] = character;
-      currentIndex += 1;
+    if (currentCharIndex <= maxLength) {
+      _characters[currentCharIndex] = character;
+      currentCharIndex += 1;
       return true;
     }
     return false;
   }
 
   bool removeChar() {
-    if (currentIndex > 0) {
-      currentIndex -= 1;
-      _characters[currentIndex] = '';
+    if (currentCharIndex > 0) {
+      currentCharIndex -= 1;
+      _characters[currentCharIndex] = '';
       return true;
     }
     return false;

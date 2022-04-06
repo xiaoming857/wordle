@@ -14,6 +14,10 @@ class Board {
     _addRow();
   }
 
+  BoardRow get lastRow => _boardRows.last;
+  BoardRow rowAt(int i) => _boardRows[i];
+  int rowsLength() => _boardRows.length;
+
   bool _addRow() {
     if (_boardRows.length < maxTries) {
       _boardRows.add(BoardRow(wordle));
@@ -27,13 +31,5 @@ class Board {
       return _boardRows[_boardRows.length - 2].toString();
     }
     return '';
-  }
-
-  BoardRow get lastRow {
-    return _boardRows.last;
-  }
-
-  List<BoardRow> get rows {
-    return _boardRows;
   }
 }

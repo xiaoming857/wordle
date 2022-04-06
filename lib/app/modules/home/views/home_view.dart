@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:wordle/app/services/generator.dart';
+import 'package:wordle/app/models/board.dart';
+import 'package:wordle/app/models/board_row.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -21,59 +22,45 @@ class HomeView extends GetView<HomeController> {
           focusNode: FocusNode(),
           onKey: controller.onKey,
           child: Obx(() {
-            String wordOfTheDay = controller.board.value.wordle;
+            Board board = controller.board.value;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text('Key pressed: ${controller.keyPressed.value}'),
-                for (int i = 0; i < controller.board.value.rows.length; i++)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (int j = 0; j < wordOfTheDay.length; j++)
-                        Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Material(
-                            elevation: (j ==
-                                    controller.board.value.rows[i].currentIndex)
-                                ? 5
-                                : 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: (controller.board.value.rows[i]
-                                          .characters[j].isEmpty)
-                                      ? Colors.grey
-                                      : Colors.black,
+                for (int i = 0; i < board.rowsLength(); i++)
+                  Builder(builder: (context) {
+                    BoardRow row = board.rowAt(i);
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        for (int j = 0; j < row.maxLength; j++)
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Material(
+                              elevation: (j == row.currentCharIndex) ? 5 : 0,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: (row.charAt(j).isEmpty)
+                                        ? Colors.grey
+                                        : Colors.black,
+                                  ),
                                 ),
-                              ),
-                              height: (j ==
-                                      controller
-                                          .board.value.rows[i].currentIndex)
-                                  ? 45
-                                  : 40,
-                              width: (j ==
-                                      controller
-                                          .board.value.rows[i].currentIndex)
-                                  ? 45
-                                  : 40,
-                              child: Center(
-                                child: Text(controller
-                                    .board.value.rows[i].characters[j]),
+                                height: (j == row.currentCharIndex) ? 45 : 40,
+                                width: (j == row.currentCharIndex) ? 45 : 40,
+                                child: Center(
+                                  child: Text(row.charAt(j)),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                    ],
-                  ),
+                      ],
+                    );
+                  }),
               ],
             );
           }),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: Generator().generateWordOfTheDay,
-        child: const Icon(Icons.refresh),
       ),
     );
   }
