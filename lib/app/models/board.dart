@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:wordle/app/models/board_row.dart';
 
 class Board {
@@ -19,7 +20,10 @@ class Board {
   int rowsLength() => _boardRows.length;
 
   bool _addRow() {
-    if (_boardRows.length < maxTries) {
+    if (_boardRows.isNotEmpty &&
+        lastRow.currentCharIndex + 1 <= lastRow.maxLength) {
+      Get.snackbar('', 'Not enough letter!', snackPosition: SnackPosition.TOP);
+    } else if (_boardRows.length < maxTries) {
       _boardRows.add(BoardRow(wordle));
       return true;
     }

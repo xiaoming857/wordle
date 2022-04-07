@@ -49,7 +49,12 @@ class HomeView extends GetView<HomeController> {
                                 height: (j == row.currentCharIndex) ? 45 : 40,
                                 width: (j == row.currentCharIndex) ? 45 : 40,
                                 child: Center(
-                                  child: Text(row.charAt(j)),
+                                  child: Text(
+                                    row.charAt(j),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
