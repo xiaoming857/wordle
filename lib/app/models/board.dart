@@ -21,10 +21,10 @@ class Board {
 
   bool _addRow() {
     if (_boardRows.isNotEmpty &&
-        lastRow.currentCharIndex + 1 <= lastRow.maxLength) {
+        lastRow.currentLetterIndex + 1 <= lastRow.maxLength) {
       Get.snackbar('', 'Not enough letter!', snackPosition: SnackPosition.TOP);
     } else if (_boardRows.length < maxTries) {
-      _boardRows.add(BoardRow(wordle));
+      _boardRows.add(BoardRow(wordle.length));
       return true;
     }
     return false;

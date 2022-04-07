@@ -22,13 +22,13 @@ class HomeController extends GetxController {
       if (RegExp(r'^[A-Z]$').hasMatch(key.keyLabel.toUpperCase())) {
         board.update((val) {
           if (val != null) {
-            val.lastRow.inputChar(key.keyLabel);
+            val.lastRow.inputLetter(key.keyLabel);
           }
         });
       } else if (key == LogicalKeyboardKey.backspace) {
         board.update((val) {
           if (val != null) {
-            val.lastRow.removeChar();
+            val.lastRow.removeLetter();
           }
         });
       } else if (key == LogicalKeyboardKey.enter) {

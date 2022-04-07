@@ -37,20 +37,20 @@ class HomeView extends GetView<HomeController> {
                           Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Material(
-                              elevation: (j == row.currentCharIndex) ? 5 : 0,
+                              elevation: (j == row.currentLetterIndex) ? 5 : 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: (row.charAt(j).isEmpty)
+                                    color: (row.letterAt(j).isEmpty)
                                         ? Colors.grey
                                         : Colors.black,
                                   ),
                                 ),
-                                height: (j == row.currentCharIndex) ? 45 : 40,
-                                width: (j == row.currentCharIndex) ? 45 : 40,
+                                height: (j == row.currentLetterIndex) ? 45 : 40,
+                                width: (j == row.currentLetterIndex) ? 45 : 40,
                                 child: Center(
                                   child: Text(
-                                    row.charAt(j),
+                                    row.letterAt(j),
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),

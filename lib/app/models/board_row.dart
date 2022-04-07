@@ -1,28 +1,31 @@
 class BoardRow {
   late final int maxLength;
-  late final List<String> _characters;
-  int currentCharIndex = 0;
+  late final List<String> _letters;
+  int _currentLetterIndex = 0;
 
-  String charAt(int i) => _characters[i];
+  List<String> get letters => List.from(_letters);
+  int get currentLetterIndex => _currentLetterIndex;
+  bool get isFilled => _letters.length == maxLength;
+  String letterAt(final int i) => _letters[i];
 
-  BoardRow(String wordle) : assert(wordle.isNotEmpty) {
-    maxLength = wordle.length;
-    _characters = List.filled(maxLength, '');
+  BoardRow(final int length) : assert(length > 0) {
+    maxLength = length;
+    _letters = List.filled(length, '');
   }
 
-  bool inputChar(String character) {
-    if (currentCharIndex <= maxLength) {
-      _characters[currentCharIndex] = character;
-      currentCharIndex += 1;
+  bool inputLetter(final String letter) {
+    if (_currentLetterIndex <= maxLength) {
+      _letters[_currentLetterIndex] = letter;
+      _currentLetterIndex += 1;
       return true;
     }
     return false;
   }
 
-  bool removeChar() {
-    if (currentCharIndex > 0) {
-      currentCharIndex -= 1;
-      _characters[currentCharIndex] = '';
+  bool removeLetter() {
+    if (_currentLetterIndex > 0) {
+      _currentLetterIndex -= 1;
+      _letters[_currentLetterIndex] = '';
       return true;
     }
     return false;
@@ -30,6 +33,6 @@ class BoardRow {
 
   @override
   String toString() {
-    return _characters.join('');
+    return _letters.join('');
   }
 }
