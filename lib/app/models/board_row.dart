@@ -1,12 +1,27 @@
+import 'package:wordle/app/models/letter_status.dart';
+
 class BoardRow {
   late final int maxLength;
   late final List<String> _letters;
+  late final List<LetterStatus>? _lettersStatus;
   int _currentLetterIndex = 0;
 
-  List<String> get letters => List.from(_letters);
   int get currentLetterIndex => _currentLetterIndex;
   bool get isFilled => _letters.length == maxLength;
+  List<String> get letters => List.from(_letters);
+
   String letterAt(final int i) => _letters[i];
+
+  List<LetterStatus> get lettersStatus =>
+      (_lettersStatus == null) ? <LetterStatus>[] : List.from(_lettersStatus!);
+
+  bool setLettersStatus(List<LetterStatus> lettersStatus) {
+    if (_lettersStatus != null) {
+      return false;
+    }
+    _lettersStatus = List.from(lettersStatus);
+    return true;
+  }
 
   BoardRow(final int length) : assert(length > 0) {
     maxLength = length;

@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text('Key pressed: ${controller.keyPressed.value}'),
-                for (int i = 0; i < board.rowsLength(); i++)
+                for (int i = 0; i < board.rowsLength; i++)
                   Builder(builder: (context) {
                     BoardRow row = board.rowAt(i);
                     return Row(
