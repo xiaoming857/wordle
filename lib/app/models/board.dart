@@ -50,9 +50,11 @@ class Board {
     } else if (_boardRows.length < maxTries) {
       var lettersStatus = _validateRow(lastRow.letters, wordle);
       if (lettersStatus == null) {
+        print('HHHHHHHH');
         // TODO: Handle validation
       } else {
         lastRow.setLettersStatus(lettersStatus);
+        _addRow();
         return true;
       }
     }
