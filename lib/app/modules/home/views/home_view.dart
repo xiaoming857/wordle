@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:wordle/app/models/board.dart';
-import 'package:wordle/app/models/board_row.dart';
+import 'package:wordle/app/models/letter_status.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -22,14 +21,61 @@ class HomeView extends GetView<HomeController> {
           focusNode: FocusNode(),
           onKey: controller.onKey,
           child: Obx(() {
-            Board board = controller.board.value;
+            final board = controller.board.value;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text('Key pressed: ${controller.keyPressed.value}'),
                 for (int i = 0; i < board.rowsLength; i++)
                   Builder(builder: (context) {
-                    BoardRow row = board.rowAt(i);
+                    final row = board.rowAt(i);
+                    if (i < board.currentRowIndex) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          for (int j = 0; j < row.maxLength; j++)
+                            Builder(builder: (context) {
+                              Color? tileColor;
+                              switch (row.lettersStatus[j]) {
+                                case LetterStatus.wrongPosition:
+                                  tileColor = Colors.amber;
+                                  break;
+                                case LetterStatus.wrong:
+                                  tileColor = Colors.grey.shade400;
+                                  break;
+                                case LetterStatus.correct:
+                                  tileColor = Colors.lime;
+                                  break;
+                                case LetterStatus.empty:
+                                  tileColor = Colors.red;
+                                  break;
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Material(
+                                  elevation: 0,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      color: tileColor,
+                                    ),
+                                    height: 40,
+                                    width: 40,
+                                    child: Center(
+                                      child: Text(
+                                        row.letterAt(j),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                        ],
+                      );
+                    }
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -37,7 +83,7 @@ class HomeView extends GetView<HomeController> {
                           Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Material(
-                              elevation: (j == row.currentLetterIndex) ? 5 : 0,
+                              elevation: (i == board.currentRowIndex) ? 5 : 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -46,8 +92,8 @@ class HomeView extends GetView<HomeController> {
                                         : Colors.black,
                                   ),
                                 ),
-                                height: (j == row.currentLetterIndex) ? 45 : 40,
-                                width: (j == row.currentLetterIndex) ? 45 : 40,
+                                height: (i == board.currentRowIndex) ? 45 : 40,
+                                width: (i == board.currentRowIndex) ? 45 : 40,
                                 child: Center(
                                   child: Text(
                                     row.letterAt(j),
