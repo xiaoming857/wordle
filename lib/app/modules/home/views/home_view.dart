@@ -12,8 +12,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeView'),
-        centerTitle: true,
+        title: const Text('Wordle'),
       ),
       body: Center(
         child: RawKeyboardListener(
@@ -25,7 +24,42 @@ class HomeView extends GetView<HomeController> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text('Key pressed: ${controller.keyPressed.value}'),
+                Center(
+                  child: Card(
+                    margin: const EdgeInsets.all(25),
+                    child: SizedBox(
+                      height: 50,
+                      width: 300,
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              const Text(
+                                'Key pressed:',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    controller.keyPressed.value,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 for (int i = 0; i < board.rowsLength; i++)
                   Builder(builder: (context) {
                     final row = board.rowAt(i);
@@ -64,7 +98,7 @@ class HomeView extends GetView<HomeController> {
                                     child: Center(
                                       child: Text(
                                         row.letterAt(j),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
