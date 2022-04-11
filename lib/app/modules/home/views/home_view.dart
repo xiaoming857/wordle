@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/models/letter_status.dart';
 
 import '../controllers/home_controller.dart';
@@ -63,7 +64,8 @@ class HomeView extends GetView<HomeController> {
                 for (int i = 0; i < board.rowsLength; i++)
                   Builder(builder: (context) {
                     final row = board.rowAt(i);
-                    if (i < board.currentRowIndex) {
+                    if (i < board.currentRowIndex ||
+                        board.currentGameStatus == GameStatus.lose) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -117,10 +119,10 @@ class HomeView extends GetView<HomeController> {
                           Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Material(
-                              elevation:
-                                  (i == board.currentRowIndex && !board.isDone)
-                                      ? 5
-                                      : 0,
+                              elevation: (i == board.currentRowIndex &&
+                                      board.currentGameStatus != GameStatus.win)
+                                  ? 5
+                                  : 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -130,11 +132,13 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 ),
                                 height: (i == board.currentRowIndex &&
-                                        !board.isDone)
+                                        board.currentGameStatus !=
+                                            GameStatus.win)
                                     ? 45
                                     : 40,
                                 width: (i == board.currentRowIndex &&
-                                        !board.isDone)
+                                        board.currentGameStatus !=
+                                            GameStatus.win)
                                     ? 45
                                     : 40,
                                 child: Center(

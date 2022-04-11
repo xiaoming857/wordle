@@ -2,14 +2,15 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wordle/app/models/board_row.dart';
+import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/models/letter_status.dart';
 
 class Board {
   late final String wordle;
   late final int maxTries;
   late final List<BoardRow> _boardRows;
+  var _currentGameStatus = GameStatus.onGoing;
   int _currentRowIndex = 0;
-  bool _isDone = false;
 
   Board(
     this.wordle, {
@@ -25,7 +26,7 @@ class Board {
   BoardRow get currentRow => _boardRows[_currentRowIndex];
   int get currentRowIndex => _currentRowIndex;
   int get rowsLength => _boardRows.length;
-  bool get isDone => _isDone;
+  GameStatus get currentGameStatus => _currentGameStatus;
 
   BoardRow rowAt(int i) => _boardRows[i];
 
@@ -75,7 +76,7 @@ class Board {
           rowAt(_currentRowIndex).setLettersStatus(lettersStatus);
           _currentRowIndex += 1;
           if (lettersStatus.every((e) => e == LetterStatus.correct)) {
-            _isDone = true;
+            _currentGameStatus = GameStatus.win;
             Get.dialog(
               Dialog(
                 child: SizedBox(
@@ -98,6 +99,59 @@ class Board {
                             ),
                             Text(
                                 'You have successfully guessed the wordle of the day!'),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('Back to main menu'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else if (_currentRowIndex == maxTries) {
+            _currentGameStatus = GameStatus.lose;
+            Get.dialog(
+              Dialog(
+                child: SizedBox(
+                  width: 500,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Try again next time!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                                'You failed to guess the wordle of the day!'),
+                            const Text('The wordle of the day is:'),
+                            Text(
+                              wordle,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),
