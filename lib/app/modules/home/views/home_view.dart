@@ -92,7 +92,7 @@ class HomeView extends GetView<HomeController> {
                                   elevation: 0,
                                   child: Container(
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
+                                      border: Border.all(color: tileColor),
                                       color: tileColor,
                                     ),
                                     height: 40,
