@@ -9,6 +9,7 @@ class Board {
   late final int maxTries;
   late final List<BoardRow> _boardRows;
   int _currentRowIndex = 0;
+  bool _isDone = false;
 
   Board(
     this.wordle, {
@@ -24,6 +25,7 @@ class Board {
   BoardRow get currentRow => _boardRows[_currentRowIndex];
   int get currentRowIndex => _currentRowIndex;
   int get rowsLength => _boardRows.length;
+  bool get isDone => _isDone;
 
   BoardRow rowAt(int i) => _boardRows[i];
 
@@ -72,6 +74,52 @@ class Board {
         } else {
           rowAt(_currentRowIndex).setLettersStatus(lettersStatus);
           _currentRowIndex += 1;
+          if (lettersStatus.every((e) => e == LetterStatus.correct)) {
+            _isDone = true;
+            Get.dialog(
+              Dialog(
+                child: SizedBox(
+                  width: 500,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: const [
+                            Text(
+                              'Congratulation!',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 21,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                                'You have successfully guessed the wordle of the day!'),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 45,
+                              child: ElevatedButton(
+                                onPressed: () => Get.back(),
+                                child: const Text('Back to main menu'),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
           return true;
         }
       }

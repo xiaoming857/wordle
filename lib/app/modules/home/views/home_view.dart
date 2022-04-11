@@ -117,7 +117,10 @@ class HomeView extends GetView<HomeController> {
                           Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Material(
-                              elevation: (i == board.currentRowIndex) ? 5 : 0,
+                              elevation:
+                                  (i == board.currentRowIndex && !board.isDone)
+                                      ? 5
+                                      : 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(
@@ -126,8 +129,14 @@ class HomeView extends GetView<HomeController> {
                                         : Colors.black,
                                   ),
                                 ),
-                                height: (i == board.currentRowIndex) ? 45 : 40,
-                                width: (i == board.currentRowIndex) ? 45 : 40,
+                                height: (i == board.currentRowIndex &&
+                                        !board.isDone)
+                                    ? 45
+                                    : 40,
+                                width: (i == board.currentRowIndex &&
+                                        !board.isDone)
+                                    ? 45
+                                    : 40,
                                 child: Center(
                                   child: Text(
                                     row.letterAt(j),
