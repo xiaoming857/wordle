@@ -21,7 +21,8 @@ class HomeView extends GetView<HomeController> {
           focusNode: FocusNode(),
           onKey: controller.onKey,
           child: Obx(() {
-            final board = controller.board.value;
+            final game = controller.game.value;
+            final board = game.board;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -61,11 +62,11 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                 ),
-                for (int i = 0; i < board.rowsLength; i++)
+                for (int i = 0; i < board.maxTries; i++)
                   Builder(builder: (context) {
                     final row = board.rowAt(i);
                     if (i < board.currentRowIndex ||
-                        board.currentGameStatus == GameStatus.lose) {
+                        game.currentGameStatus == GameStatus.lose) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -120,7 +121,7 @@ class HomeView extends GetView<HomeController> {
                             padding: const EdgeInsets.all(5.0),
                             child: Material(
                               elevation: (i == board.currentRowIndex &&
-                                      board.currentGameStatus != GameStatus.win)
+                                      game.currentGameStatus != GameStatus.win)
                                   ? 5
                                   : 0,
                               child: Container(
@@ -132,19 +133,19 @@ class HomeView extends GetView<HomeController> {
                                   ),
                                 ),
                                 height: (i == board.currentRowIndex &&
-                                        board.currentGameStatus !=
+                                        game.currentGameStatus !=
                                             GameStatus.win)
                                     ? 45
                                     : 40,
                                 width: (i == board.currentRowIndex &&
-                                        board.currentGameStatus !=
+                                        game.currentGameStatus !=
                                             GameStatus.win)
                                     ? 45
                                     : 40,
                                 child: Center(
                                   child: Text(
                                     row.letterAt(j),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

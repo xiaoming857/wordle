@@ -1,16 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:wordle/app/models/board.dart';
+import 'package:wordle/app/models/game.dart';
+import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/services/generator.dart';
 
 class HomeController extends GetxController {
   final keyPressed = ''.obs;
-  late final Rx<Board> board;
+  late final Rx<Game> game;
 
   @override
   void onInit() {
-    board = Board(Generator().generateWordOfTheDay()).obs;
+    game = Game(Generator().generateWordOfTheDay()).obs;
     super.onInit();
   }
 
@@ -18,21 +18,22 @@ class HomeController extends GetxController {
     if (event.runtimeType == RawKeyDownEvent) {
       var key = event.logicalKey;
       keyPressed.value = key.keyLabel;
-      debugPrint(key.keyLabel);
-      if (RegExp(r'^[A-Z]$').hasMatch(key.keyLabel.toUpperCase())) {
-        board.update((val) {
-          if (val != null) {
-            val.currentRow.inputLetter(key.keyLabel);
-          }
-        });
-      } else if (key == LogicalKeyboardKey.backspace) {
-        board.update((val) {
-          if (val != null) {
-            val.currentRow.removeLetter();
-          }
-        });
-      } else if (key == LogicalKeyboardKey.enter) {
-        board.value.submit();
+      if (game.value.currentGameStatus == GameStatus.onGoing) {
+        if (RegExp(r'^[A-Z]$').hasMatch(key.keyLabel.toUpperCase())) {
+          game.update((val) {
+            if (val != null) {
+              val.board.currentRow.inputLetter(key.keyLabel);
+            }
+          });
+        } else if (key == LogicalKeyboardKey.backspace) {
+          game.update((val) {
+            if (val != null) {
+              val.board.currentRow.removeLetter();
+            }
+          });
+        } else if (key == LogicalKeyboardKey.enter) {
+          game.value.submit();
+        }
       }
     }
   }
