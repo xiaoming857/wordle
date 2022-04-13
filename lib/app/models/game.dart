@@ -61,7 +61,15 @@ class Game {
           // TODO: Handle validation
         } else {
           board.rowAt(board.currentRowIndex).setLettersStatus(lettersStatus);
-          if (!board.nextRow()) {
+          if (lettersStatus.every((e) => e == LetterStatus.correct)) {
+            _currentGameStatus = GameStatus.win;
+            Get.dialog(const GameDialog(
+              'Congratulation!',
+              contents: [
+                Text('You have successfully guessed the wordle of the day!'),
+              ],
+            ));
+          } else if (!board.nextRow()) {
             _currentGameStatus = GameStatus.lose;
             Get.dialog(GameDialog(
               'Try again next time!',
@@ -75,14 +83,6 @@ class Game {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ));
-          } else if (lettersStatus.every((e) => e == LetterStatus.correct)) {
-            _currentGameStatus = GameStatus.win;
-            Get.dialog(const GameDialog(
-              'Congratulation!',
-              contents: [
-                Text('You have successfully guessed the wordle of the day!'),
               ],
             ));
           }
