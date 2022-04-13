@@ -4,9 +4,11 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
+  static const GAME_BOARD = _Paths.GAME_BOARD;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
+  static const GAME_BOARD = '/game-board';
 }

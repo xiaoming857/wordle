@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:wordle/app/models/game_status.dart';
-import 'package:wordle/app/widgets/game_board_row.dart';
+import 'package:wordle/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -12,66 +11,36 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wordle'),
-      ),
       body: Center(
-        child: RawKeyboardListener(
-          autofocus: true,
-          focusNode: FocusNode(),
-          onKey: controller.onKey,
-          child: Obx(() {
-            final game = controller.game.value;
-            final board = game.board;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Card(
-                    margin: const EdgeInsets.all(25),
-                    child: SizedBox(
-                      height: 50,
-                      width: 300,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Key pressed:',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    controller.keyPressed.value,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'WORDLE',
+              style: TextStyle(
+                fontSize: 56,
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: Get.width * 0.3),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(
+                    height: 45,
+                    child: OutlinedButton(
+                      onPressed: () => Get.toNamed(Routes.GAME_BOARD),
+                      child: const Text('Start Game'),
                     ),
                   ),
-                ),
-                for (int i = 0; i < board.maxTries; i++)
-                  GameBoardRow(
-                    board.rowAt(i).letters,
-                    board.rowAt(i).lettersStatus,
-                    isActive: (i == board.currentRowIndex &&
-                        game.currentGameStatus == GameStatus.onGoing),
-                  ),
-              ],
-            );
-          }),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

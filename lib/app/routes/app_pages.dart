@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/game_board/bindings/game_board_binding.dart';
+import '../modules/game_board/views/game_board_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 
@@ -15,6 +17,11 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.GAME_BOARD,
+      page: () => GameBoardView(),
+      binding: GameBoardBinding(),
     ),
   ];
 }
