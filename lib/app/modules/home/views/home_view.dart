@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:wordle/app/models/game_status.dart';
-import 'package:wordle/app/models/letter_status.dart';
+import 'package:wordle/app/widgets/game_board_row.dart';
 
 import '../controllers/home_controller.dart';
 
@@ -63,99 +63,12 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ),
                 for (int i = 0; i < board.maxTries; i++)
-                  Builder(builder: (context) {
-                    final row = board.rowAt(i);
-                    if (i < board.currentRowIndex ||
-                        game.currentGameStatus == GameStatus.lose) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          for (int j = 0; j < row.maxLength; j++)
-                            Builder(builder: (context) {
-                              Color? tileColor;
-                              switch (row.lettersStatus[j]) {
-                                case LetterStatus.wrongPosition:
-                                  tileColor = Colors.amber;
-                                  break;
-                                case LetterStatus.wrong:
-                                  tileColor = Colors.grey.shade400;
-                                  break;
-                                case LetterStatus.correct:
-                                  tileColor = Colors.lime;
-                                  break;
-                                case LetterStatus.empty:
-                                  tileColor = Colors.red;
-                                  break;
-                              }
-                              return Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Material(
-                                  elevation: 0,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: tileColor),
-                                      color: tileColor,
-                                    ),
-                                    height: 40,
-                                    width: 40,
-                                    child: Center(
-                                      child: Text(
-                                        row.letterAt(j),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }),
-                        ],
-                      );
-                    }
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int j = 0; j < row.maxLength; j++)
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Material(
-                              elevation: (i == board.currentRowIndex &&
-                                      game.currentGameStatus != GameStatus.win)
-                                  ? 5
-                                  : 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: (row.letterAt(j).isEmpty)
-                                        ? Colors.grey
-                                        : Colors.black,
-                                  ),
-                                ),
-                                height: (i == board.currentRowIndex &&
-                                        game.currentGameStatus !=
-                                            GameStatus.win)
-                                    ? 45
-                                    : 40,
-                                width: (i == board.currentRowIndex &&
-                                        game.currentGameStatus !=
-                                            GameStatus.win)
-                                    ? 45
-                                    : 40,
-                                child: Center(
-                                  child: Text(
-                                    row.letterAt(j),
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    );
-                  }),
+                  GameBoardRow(
+                    board.rowAt(i).letters,
+                    board.rowAt(i).lettersStatus,
+                    isActive: (i == board.currentRowIndex &&
+                        game.currentGameStatus == GameStatus.onGoing),
+                  ),
               ],
             );
           }),
