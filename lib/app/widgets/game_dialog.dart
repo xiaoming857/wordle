@@ -42,8 +42,8 @@ class GameDialog extends StatelessWidget {
                   child: SizedBox(
                     height: 45,
                     child: ElevatedButton(
+                      child: const Text('Close'),
                       onPressed: () => Get.back(),
-                      child: const Text('Back to main menu'),
                     ),
                   ),
                 ),
