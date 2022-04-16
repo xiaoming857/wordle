@@ -12,6 +12,7 @@ void main() {
       title: "Application",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
           dialogTheme: DialogTheme(
             shape: RoundedRectangleBorder(

@@ -33,7 +33,7 @@ class HomeView extends GetView<HomeController> {
                   SizedBox(
                     height: 45,
                     child: OutlinedButton(
-                      onPressed: () => Get.toNamed(Routes.GAME_BOARD),
+                      onPressed: () => Get.offAndToNamed(Routes.GAME_BOARD),
                       child: const Text('Start Game'),
                     ),
                   ),

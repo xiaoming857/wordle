@@ -12,67 +12,99 @@ class GameBoardView extends GetView<GameBoardController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('GameBoardView'),
-      ),
-      body: Center(
-        child: RawKeyboardListener(
-          autofocus: true,
-          focusNode: FocusNode(),
-          onKey: controller.onKey,
-          child: Obx(() {
-            final game = controller.game.value;
-            final board = game.board;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: Card(
-                    margin: const EdgeInsets.all(25),
-                    child: SizedBox(
-                      height: 50,
-                      width: 300,
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Key pressed:',
-                                style: TextStyle(
-                                  fontSize: 14,
+      body: Column(
+        children: [
+          Card(
+            margin: EdgeInsets.zero,
+            shape: Border.all(width: 0, color: Colors.transparent),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Wordle',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      FittedBox(
+                        child: IconButton(
+                          onPressed: controller.onOpenMenu,
+                          icon: const Icon(
+                            Icons.menu_rounded,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          RawKeyboardListener(
+            autofocus: true,
+            focusNode: FocusNode(),
+            onKey: controller.onKey,
+            child: Obx(() {
+              final game = controller.game.value;
+              final board = game.board;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Card(
+                      margin: const EdgeInsets.all(25),
+                      child: SizedBox(
+                        height: 50,
+                        width: 300,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                const Text(
+                                  'Key pressed:',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                    controller.keyPressed.value,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      controller.keyPressed.value,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                for (int i = 0; i < board.maxTries; i++)
-                  GameBoardRow(
-                    board.rowAt(i).letters,
-                    board.rowAt(i).lettersStatus,
-                    isActive: (i == board.currentRowIndex &&
-                        game.currentGameStatus == GameStatus.onGoing),
-                  ),
-              ],
-            );
-          }),
-        ),
+                  for (int i = 0; i < board.maxTries; i++)
+                    GameBoardRow(
+                      board.rowAt(i).letters,
+                      board.rowAt(i).lettersStatus,
+                      isActive: (i == board.currentRowIndex &&
+                          game.currentGameStatus == GameStatus.onGoing),
+                    ),
+                ],
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
