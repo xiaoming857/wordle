@@ -39,7 +39,7 @@ class Game {
   }
 
   bool submit() {
-    if (board.currentRow.currentLetterIndex < board.currentRow.maxLength) {
+    if (!board.currentRow.isFilled) {
       Get.snackbar(
         'Warning',
         'Not enough letter!',

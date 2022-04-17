@@ -1,35 +1,50 @@
 import 'package:wordle/app/models/letter_status.dart';
 
+/// BoardRow
+///
+/// ## description
+/// The [BoardRow] is a row of letters in a wordle board game. It is
+/// the place where users will input their guesses. Once the letter
+/// status is filled, users can no longer insert or remove any letters
+/// from the row.
+///
+/// ## parameters
+/// - [maxLength] [int] defines the maximum length of the row. Users
+///   need to input exactly the same length of letters.
 class BoardRow {
-  late final int maxLength;
+  late final int _maxLength;
   late final List<String> _letters;
-  List<LetterStatus>? _lettersStatus;
+  late List<LetterStatus> _lettersStatus;
   int _currentLetterIndex = 0;
+  bool _isFinalized = false;
 
-  int get currentLetterIndex => _currentLetterIndex;
-  bool get isFilled => _letters.length == maxLength;
+  BoardRow(final int maxLength) : assert(maxLength > 0) {
+    _maxLength = maxLength;
+    _letters = List.filled(maxLength, '');
+    _lettersStatus = List.filled(maxLength, LetterStatus.empty);
+  }
+
+  bool get isFilled => _currentLetterIndex >= _maxLength;
+  bool get isFinalized => _isFinalized;
   List<String> get letters => List.from(_letters);
-
-  String letterAt(final int i) => _letters[i];
-
-  List<LetterStatus> get lettersStatus =>
-      (_lettersStatus == null) ? <LetterStatus>[] : List.from(_lettersStatus!);
+  List<LetterStatus> get lettersStatus => List.from(_lettersStatus);
 
   bool setLettersStatus(List<LetterStatus> lettersStatus) {
-    if (_lettersStatus != null) {
+    if (isFinalized ||
+        lettersStatus.length != _maxLength ||
+        lettersStatus.contains(LetterStatus.empty)) {
       return false;
     }
     _lettersStatus = List.from(lettersStatus);
+    _isFinalized = true;
     return true;
   }
 
-  BoardRow(final int length) : assert(length > 0) {
-    maxLength = length;
-    _letters = List.filled(length, '');
-  }
+  String letterAt(final int i) =>
+      !(i >= 0 && i < _maxLength) ? '' : _letters[i];
 
   bool inputLetter(final String letter) {
-    if (_currentLetterIndex < maxLength) {
+    if (!_isFinalized && _currentLetterIndex < _maxLength) {
       _letters[_currentLetterIndex] = letter;
       _currentLetterIndex += 1;
       return true;
@@ -38,7 +53,7 @@ class BoardRow {
   }
 
   bool removeLetter() {
-    if (_currentLetterIndex > 0) {
+    if (!_isFinalized && _currentLetterIndex > 0) {
       _currentLetterIndex -= 1;
       _letters[_currentLetterIndex] = '';
       return true;
