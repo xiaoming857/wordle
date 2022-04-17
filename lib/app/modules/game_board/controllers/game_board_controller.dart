@@ -56,7 +56,11 @@ class GameBoardController extends GetxController {
             }
           });
         } else if (key == LogicalKeyboardKey.enter) {
-          game.value.submit();
+          game.update((val) {
+            if (val != null) {
+              val.submit();
+            }
+          });
         }
       }
     }
