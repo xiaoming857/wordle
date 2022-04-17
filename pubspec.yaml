@@ -1,5 +1,5 @@
 name: wordle
-version: 1.0.0+1
+version: 1.0.0-alpha.1
 publish_to: none
 description: A new Flutter project for Wordle game.
 environment: 
