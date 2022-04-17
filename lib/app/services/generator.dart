@@ -14,11 +14,12 @@ class Generator {
   final List<String> usedWord = [];
 
   String generateWordOfTheDay() {
-    var word = 'HORSE';
-    /* var randomNumber = Random(); */
-    /* while (word.isEmpty && !usedWord.contains(word)) { */
-    /*   word = nouns.elementAt(randomNumber.nextInt(nouns.length)).toUpperCase(); */
-    /* } */
+    var word = '';
+    var randomNumber = Random();
+    while (word.isEmpty && !usedWord.contains(word)) {
+      final words = nouns.where((e) => e.length == 5);
+      word = words.elementAt(randomNumber.nextInt(words.length)).toUpperCase();
+    }
     usedWord.add(word);
     return word;
   }
