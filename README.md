@@ -1,16 +1,32 @@
-# wordle
+# Wordle
 
-A new Flutter project for Wordle game.
+## Description
 
-## Getting Started
+A wordle game made with Flutter framework.
 
-This project is a starting point for a Flutter application.
+## Team
 
-A few resources to get you started if this is your first Flutter project:
+| Index | Name      | Github                                        |
+| ----- | --------- | --------------------------------------------- |
+| 1     | Arvin Lee | [xiaoming857](https://github.com/xiaoming857) |
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Version Detail
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| Index | Name    | Version          |
+| ----- | ------- | ---------------- |
+| 1     | Flutter | Stable - 2.10.04 |
+| 2     | Dart    | 2.16.2           |
+
+## Game Preview
+
+### Main Menu
+
+<img title="" src="assets/images/main_menu.png" alt="" data-align="center">
+
+### Board
+
+![](assets/images/board.png)
+
+### Menu
+
+![](assets/images/menu.png)
