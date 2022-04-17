@@ -46,63 +46,88 @@ class GameBoardView extends GetView<GameBoardController> {
               ),
             ),
           ),
-          RawKeyboardListener(
-            autofocus: true,
-            focusNode: FocusNode(),
-            onKey: controller.onKey,
-            child: Obx(() {
-              final game = controller.game.value;
-              final board = game.board;
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Card(
-                      margin: const EdgeInsets.all(25),
-                      child: SizedBox(
-                        height: 50,
-                        width: 300,
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'Key pressed:',
-                                  style: TextStyle(
-                                    fontSize: 14,
+          SizedBox(
+            width: 300,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32.0),
+                  child: SizedBox(
+                    height: 50,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text('Elapsed Time'),
+                              const SizedBox(height: 5.0),
+                              Obx(() {
+                                return Text(
+                                  controller.gameTime.join(':'),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                                Expanded(
-                                  child: Center(
-                                    child: Text(
-                                      controller.keyPressed.value,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                );
+                              }),
+                            ],
                           ),
                         ),
-                      ),
+                        const VerticalDivider(
+                          indent: 5,
+                          endIndent: 5,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Key pressed',
+                              ),
+                              const SizedBox(height: 5.0),
+                              Obx(() {
+                                return Text(
+                                  (controller.keyPressed.isEmpty)
+                                      ? ''
+                                      : controller.keyPressed.value,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  for (int i = 0; i < board.maxTries; i++)
-                    GameBoardRow(
-                      board.rowAt(i).letters,
-                      board.rowAt(i).lettersStatus,
-                      isActive: (i == board.currentRowIndex &&
-                          game.currentGameStatus == GameStatus.onGoing),
-                    ),
-                ],
-              );
-            }),
+                ),
+                RawKeyboardListener(
+                  autofocus: true,
+                  focusNode: FocusNode(),
+                  onKey: controller.onKey,
+                  child: Obx(() {
+                    final game = controller.game.value;
+                    final board = game.board;
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (int i = 0; i < board.maxTries; i++)
+                          GameBoardRow(
+                            board.rowAt(i).letters,
+                            board.rowAt(i).lettersStatus,
+                            isActive: (i == board.currentRowIndex &&
+                                game.currentGameStatus == GameStatus.onGoing),
+                          ),
+                      ],
+                    );
+                  }),
+                ),
+              ],
+            ),
           ),
         ],
       ),

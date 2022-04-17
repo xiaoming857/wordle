@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -9,11 +11,31 @@ import 'package:wordle/app/services/generator.dart';
 class GameBoardController extends GetxController {
   final keyPressed = ''.obs;
   late final Rx<Game> game;
+  late final Timer timer;
+  late final gameTime = ['00', '00', '00'].obs;
 
   @override
   void onInit() {
     game = Game(Generator().generateWordOfTheDay()).obs;
+    timer = Timer.periodic(const Duration(seconds: 1), (time) {
+      if (game.value.currentGameStatus == GameStatus.onGoing) {
+        final seconds = time.tick % 60;
+        final minutes = (time.tick ~/ 60) % 60;
+        final hours = (time.tick ~/ 3600);
+        gameTime.value = [
+          (hours < 10) ? '0$hours' : hours.toString(),
+          (minutes < 10) ? '0$minutes' : minutes.toString(),
+          (seconds < 10) ? '0$seconds' : seconds.toString(),
+        ];
+      }
+    });
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    timer.cancel();
+    super.onClose();
   }
 
   void onKey(RawKeyEvent event) {
