@@ -64,7 +64,7 @@ class GameBoardView extends GetView<GameBoardController> {
                               const SizedBox(height: 5.0),
                               Obx(() {
                                 return Text(
-                                  controller.gameTime.join(':'),
+                                  controller.elapsedTime.join(':'),
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,

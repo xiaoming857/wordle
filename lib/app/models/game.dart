@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:wordle/app/models/board.dart';
 import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/models/letter_status.dart';
-import 'package:wordle/app/widgets/game_dialog.dart';
 
 class Game {
   late final String wordle;
@@ -63,28 +62,8 @@ class Game {
           board.rowAt(board.currentRowIndex).setLettersStatus(lettersStatus);
           if (lettersStatus.every((e) => e == LetterStatus.correct)) {
             _currentGameStatus = GameStatus.win;
-            Get.dialog(const GameDialog(
-              'Congratulation!',
-              contents: [
-                Text('You have successfully guessed the wordle of the day!'),
-              ],
-            ));
           } else if (!board.nextRow()) {
             _currentGameStatus = GameStatus.lose;
-            Get.dialog(GameDialog(
-              'Try again next time!',
-              contents: [
-                const Text('You failed to guess the wordle of the day!'),
-                const Text('The wordle of the day is:'),
-                Text(
-                  wordle,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ));
           }
           return true;
         }
