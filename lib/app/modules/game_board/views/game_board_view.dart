@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/widgets/game_board_row.dart';
+import 'package:wordle/app/widgets/virtual_keyboard.dart';
 
 import '../controllers/game_board_controller.dart';
 
@@ -129,6 +130,13 @@ class GameBoardView extends GetView<GameBoardController> {
               ],
             ),
           ),
+          const Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: VirtualKeyboard(),
+            ),
+          ),
+          const SizedBox(height: 64.0),
         ],
       ),
     );
