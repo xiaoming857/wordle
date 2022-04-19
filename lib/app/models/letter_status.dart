@@ -1,6 +1,6 @@
 enum LetterStatus {
+  correct,
   wrongPosition,
   wrong,
-  correct,
   empty,
 }

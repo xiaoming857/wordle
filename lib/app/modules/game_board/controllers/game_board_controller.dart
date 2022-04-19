@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:wordle/app/models/game.dart';
 import 'package:wordle/app/models/game_status.dart';
-import 'package:wordle/app/models/letter_status.dart';
 import 'package:wordle/app/models/statistic.dart';
 import 'package:wordle/app/routes/app_pages.dart';
 import 'package:wordle/app/services/generator.dart';
 import 'package:wordle/app/widgets/end_game_dialog.dart';
+import 'package:wordle/app/widgets/virtual_keyboard_controller.dart';
 
 class GameBoardController extends GetxController {
   final keyPressed = ''.obs;
@@ -17,35 +17,7 @@ class GameBoardController extends GetxController {
   late final Timer timer;
   late final elapsedTime = ['00', '00', '00'].obs;
 
-  final virtualKeys = {
-    'Q': LetterStatus.empty,
-    'W': LetterStatus.empty,
-    'E': LetterStatus.empty,
-    'R': LetterStatus.empty,
-    'T': LetterStatus.empty,
-    'Y': LetterStatus.empty,
-    'U': LetterStatus.empty,
-    'I': LetterStatus.empty,
-    'O': LetterStatus.empty,
-    'P': LetterStatus.empty,
-    'A': LetterStatus.empty,
-    'S': LetterStatus.empty,
-    'D': LetterStatus.empty,
-    'F': LetterStatus.empty,
-    'G': LetterStatus.empty,
-    'H': LetterStatus.empty,
-    'J': LetterStatus.empty,
-    'K': LetterStatus.empty,
-    'L': LetterStatus.empty,
-    'Z': LetterStatus.empty,
-    'X': LetterStatus.empty,
-    'C': LetterStatus.empty,
-    'V': LetterStatus.empty,
-    'B': LetterStatus.empty,
-    'N': LetterStatus.empty,
-    'M': LetterStatus.empty,
-    'BACKSPACE': LetterStatus.empty,
-  }.obs;
+  final controller = VirtualKeyboardController().obs;
 
   @override
   void onInit() {
@@ -117,7 +89,11 @@ class GameBoardController extends GetxController {
                 final board = game.value.board;
                 final row = board.rowAt(board.currentRowIndex - 1);
                 for (var i = 0; i < row.letters.length; i++) {
-                  virtualKeys[row.letters[i]] = row.lettersStatus[i];
+                  controller.update((val) {
+                    if (val != null) {
+                      val.updateStatus(row.letters[i], row.lettersStatus[i]);
+                    }
+                  });
                 }
               }
             }
