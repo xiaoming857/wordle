@@ -71,7 +71,7 @@ class GameBoardController extends GetxController {
                     Statistic(
                       elapsedTime,
                       true,
-                      game.value.board.currentRowIndex,
+                      game.value.board.currentRowIndex + 1,
                       game.value.wordle,
                     ),
                   ),
@@ -82,7 +82,7 @@ class GameBoardController extends GetxController {
                     Statistic(
                       elapsedTime,
                       false,
-                      game.value.board.currentRowIndex,
+                      game.value.board.currentRowIndex + 1,
                       game.value.wordle,
                     ),
                   ),
