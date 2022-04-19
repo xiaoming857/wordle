@@ -105,9 +105,10 @@ class GameBoardView extends GetView<GameBoardController> {
                     ),
                   ),
                 ),
+                // TODO: Create focus area
                 RawKeyboardListener(
                   autofocus: true,
-                  focusNode: FocusNode(),
+                  focusNode: controller.focusNode,
                   onKey: controller.onKey,
                   child: Obx(() {
                     final game = controller.game.value;
@@ -138,6 +139,7 @@ class GameBoardView extends GetView<GameBoardController> {
                 onLetterKeyPressed: controller.boardInput,
                 onEnterPressed: () => controller.boardInput('ENTER'),
                 onBackspacePressed: () => controller.boardInput('BACKSPACE'),
+                onKeyPressed: () => controller.requestFocus(),
               ),
             ),
           ),

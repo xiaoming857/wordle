@@ -16,6 +16,8 @@ class GameBoardController extends GetxController {
   late final Rx<Game> game;
   late final Timer timer;
   late final elapsedTime = ['00', '00', '00'].obs;
+  final focusNode = FocusNode();
+  void requestFocus() => focusNode.requestFocus();
 
   final controller = VirtualKeyboardController().obs;
 
@@ -111,8 +113,8 @@ class GameBoardController extends GetxController {
     }
   }
 
-  void onOpenMenu() {
-    Get.dialog(
+  void onOpenMenu() async {
+    await Get.dialog(
       Dialog(
         child: SizedBox(
           width: 300,
@@ -170,5 +172,6 @@ class GameBoardController extends GetxController {
       barrierDismissible: false,
       useSafeArea: true,
     );
+    requestFocus();
   }
 }
