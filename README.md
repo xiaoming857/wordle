@@ -4,6 +4,10 @@
 
 A wordle game made with Flutter framework.
 
+#### Version
+
+v1.0.0-alpha.2
+
 ## Team
 
 | Index | Name      | Github                                        |
@@ -29,12 +33,24 @@ python -m http.server 8000
 
 ### Main Menu
 
-<img title="" src="assets/images/main_menu.png" alt="" data-align="center">
+<img title="" src="assets/images/1_main_menu.png" alt="" data-align="center">
 
 ### Board
 
-![](assets/images/board.png)
+![](assets/images/2_board.png)
+
+### Filled First Row
+
+![](assets/images/3_board_filled.png)
+
+### Filled All Rows
+
+![](assets/images/4_board_done.png)
+
+### Statistics
+
+![](assets/images/5_statistic.png)
 
 ### Menu
 
-![](assets/images/menu.png)
+![](assets/images/6_menu.png)
