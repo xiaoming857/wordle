@@ -130,10 +130,17 @@ class GameBoardView extends GetView<GameBoardController> {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: VirtualKeyboard(),
+              child: Obx(() {
+                return VirtualKeyboard(
+                  controller.virtualKeys.value,
+                  onPressed: (String key) {
+                    // TODO: Implement virtual keyboard input
+                  },
+                );
+              }),
             ),
           ),
           const SizedBox(height: 64.0),
