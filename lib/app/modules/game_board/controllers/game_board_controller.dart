@@ -71,62 +71,67 @@ class GameBoardController extends GetxController {
     super.onClose();
   }
 
+  void boardInput(String key) {
+    key = key.toUpperCase();
+    if (game.value.currentGameStatus == GameStatus.onGoing) {
+      if (RegExp(r'^[A-Z]$').hasMatch(key)) {
+        game.update((val) {
+          if (val != null) {
+            val.board.currentRow.inputLetter(key);
+          }
+        });
+      } else if (key == 'BACKSPACE') {
+        game.update((val) {
+          if (val != null) {
+            val.board.currentRow.removeLetter();
+          }
+        });
+      } else if (key == 'ENTER') {
+        game.update((val) {
+          if (val != null) {
+            final ok = val.submit();
+            if (ok) {
+              if (game.value.currentGameStatus == GameStatus.win) {
+                Get.dialog(
+                  EndGameDialog(
+                    Statistic(
+                      elapsedTime,
+                      true,
+                      game.value.board.currentRowIndex,
+                      game.value.wordle,
+                    ),
+                  ),
+                );
+              } else if (game.value.currentGameStatus == GameStatus.lose) {
+                Get.dialog(
+                  EndGameDialog(
+                    Statistic(
+                      elapsedTime,
+                      false,
+                      game.value.board.currentRowIndex,
+                      game.value.wordle,
+                    ),
+                  ),
+                );
+              } else {
+                final board = game.value.board;
+                final row = board.rowAt(board.currentRowIndex - 1);
+                for (var i = 0; i < row.letters.length; i++) {
+                  virtualKeys[row.letters[i]] = row.lettersStatus[i];
+                }
+              }
+            }
+          }
+        });
+      }
+    }
+  }
+
   void onKey(RawKeyEvent event) {
     if (event.runtimeType == RawKeyDownEvent) {
       var key = event.logicalKey;
       keyPressed.value = key.keyLabel;
-      if (game.value.currentGameStatus == GameStatus.onGoing) {
-        if (RegExp(r'^[A-Z]$').hasMatch(key.keyLabel.toUpperCase())) {
-          game.update((val) {
-            if (val != null) {
-              val.board.currentRow.inputLetter(key.keyLabel);
-            }
-          });
-        } else if (key == LogicalKeyboardKey.backspace) {
-          game.update((val) {
-            if (val != null) {
-              val.board.currentRow.removeLetter();
-            }
-          });
-        } else if (key == LogicalKeyboardKey.enter) {
-          game.update((val) {
-            if (val != null) {
-              final ok = val.submit();
-              if (ok) {
-                if (game.value.currentGameStatus == GameStatus.win) {
-                  Get.dialog(
-                    EndGameDialog(
-                      Statistic(
-                        elapsedTime,
-                        true,
-                        game.value.board.currentRowIndex,
-                        game.value.wordle,
-                      ),
-                    ),
-                  );
-                } else if (game.value.currentGameStatus == GameStatus.lose) {
-                  Get.dialog(
-                    EndGameDialog(
-                      Statistic(
-                        elapsedTime,
-                        false,
-                        game.value.board.currentRowIndex,
-                        game.value.wordle,
-                      ),
-                    ),
-                  );
-                } else {
-                  final board = game.value.board;
-                  final row = board.rowAt(board.currentRowIndex - 1);
-                  for (var i = 0; i < row.letters.length; i++) {
-                    virtualKeys[row.letters[i]] = row.lettersStatus[i];
-                  }
-                }
-              }
-            }
-          });
-        }
-      }
+      boardInput(keyPressed.value);
     }
   }
 

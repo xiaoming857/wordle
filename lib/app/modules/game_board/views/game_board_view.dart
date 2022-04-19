@@ -136,9 +136,7 @@ class GameBoardView extends GetView<GameBoardController> {
               child: Obx(() {
                 return VirtualKeyboard(
                   controller.virtualKeys.value,
-                  onPressed: (String key) {
-                    // TODO: Implement virtual keyboard input
-                  },
+                  onPressed: controller.boardInput,
                 );
               }),
             ),
