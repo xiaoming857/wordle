@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:wordle/app/constants/app_info.dart';
 import 'package:wordle/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -15,15 +16,14 @@ class HomeView extends GetView<HomeController> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Spacer(),
             const Text(
               'WORDLE',
               style: TextStyle(
                 fontSize: 56,
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: Get.width * 0.3),
               child: Column(
@@ -40,6 +40,14 @@ class HomeView extends GetView<HomeController> {
                 ],
               ),
             ),
+            const Spacer(),
+            Text(
+              'v${App.packageInfo.version.toString()}',
+              style: const TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 60),
           ],
         ),
       ),

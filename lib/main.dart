@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:wordle/app/constants/app_info.dart';
 
 import 'app/routes/app_pages.dart';
 import 'app/services/generator.dart';
 
-void main() {
+void main() async {
+  App.init(await PackageInfo.fromPlatform());
   Generator().generateWordOfTheDay();
   runApp(
     GetMaterialApp(
