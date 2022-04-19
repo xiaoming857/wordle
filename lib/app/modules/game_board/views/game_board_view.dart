@@ -13,8 +13,9 @@ class GameBoardView extends GetView<GameBoardController> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: controller.requestFocus,
       behavior: HitTestBehavior.opaque,
+      onTapUp: (_) => controller.requestFocus(),
+      onPanEnd: (_) => controller.requestFocus(),
       child: Scaffold(
         body: Column(
           children: [

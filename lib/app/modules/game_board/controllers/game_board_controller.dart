@@ -42,6 +42,7 @@ class GameBoardController extends GetxController {
   @override
   void onClose() {
     timer.cancel();
+    focusNode.dispose();
     super.onClose();
   }
 
