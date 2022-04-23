@@ -139,7 +139,7 @@ class GameBoardView extends GetView<GameBoardController> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: VirtualKeyboard(
-                  controller.controller.value,
+                  controller.controller,
                   onLetterKeyPressed: controller.boardInput,
                   onEnterPressed: () => controller.boardInput('ENTER'),
                   onBackspacePressed: () => controller.boardInput('BACKSPACE'),

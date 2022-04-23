@@ -50,8 +50,8 @@ class VirtualKeyboard extends StatelessWidget {
                                 child: Text(virtualKey),
                                 controller: controller,
                                 size: Size(size, size),
-                                curve: Curves.easeInToLinear,
-                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInCirc,
+                                duration: const Duration(milliseconds: 300),
                                 backgroundColor: () {
                                   var backgroundColor = Colors.transparent;
                                   switch (controller.statusAt(virtualKey)) {

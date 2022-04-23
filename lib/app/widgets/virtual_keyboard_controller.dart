@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:wordle/app/models/board_row.dart';
 import 'package:wordle/app/models/letter_status.dart';
 
 class VirtualKeyboardController extends ChangeNotifier {
@@ -45,14 +46,19 @@ class VirtualKeyboardController extends ChangeNotifier {
     return _virtualKeys[key] ?? LetterStatus.empty;
   }
 
-  bool updateStatus(String key, LetterStatus status) {
-    if (_virtualKeys.containsKey(key) && status != LetterStatus.empty) {
-      if (status.index < _virtualKeys[key]!.index) {
-        _virtualKeys[key] = status;
-        notifyListeners();
+  bool updateStatus(BoardRow row) {
+    for (var i = 0; i < row.letters.length; i++) {
+      final letter = row.letters[i];
+      final status = row.lettersStatus[i];
+      if (_virtualKeys.containsKey(letter) && status != LetterStatus.empty) {
+        if (status.index < _virtualKeys[letter]!.index) {
+          _virtualKeys[letter] = status;
+        }
+      } else {
+        return false;
       }
-      return true;
     }
-    return false;
+    notifyListeners();
+    return true;
   }
 }

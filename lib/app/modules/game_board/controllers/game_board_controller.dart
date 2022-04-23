@@ -19,7 +19,7 @@ class GameBoardController extends GetxController {
   final focusNode = FocusNode();
   void requestFocus() => focusNode.requestFocus();
 
-  final controller = VirtualKeyboardController().obs;
+  final controller = VirtualKeyboardController();
 
   @override
   void onInit() {
@@ -62,41 +62,40 @@ class GameBoardController extends GetxController {
           }
         });
       } else if (key == 'ENTER') {
-        game.update((val) {
+        game.update((val) async {
           if (val != null) {
             final ok = val.submit();
             if (ok) {
-              if (game.value.currentGameStatus == GameStatus.win) {
-                Get.dialog(
-                  EndGameDialog(
-                    Statistic(
-                      elapsedTime,
-                      true,
-                      game.value.board.currentRowIndex + 1,
-                      game.value.wordle,
-                    ),
-                  ),
-                );
-              } else if (game.value.currentGameStatus == GameStatus.lose) {
-                Get.dialog(
-                  EndGameDialog(
-                    Statistic(
-                      elapsedTime,
-                      false,
-                      game.value.board.currentRowIndex + 1,
-                      game.value.wordle,
-                    ),
-                  ),
-                );
-              } else {
-                final board = game.value.board;
+              final board = game.value.board;
+              if (game.value.currentGameStatus == GameStatus.onGoing) {
                 final row = board.rowAt(board.currentRowIndex - 1);
-                for (var i = 0; i < row.letters.length; i++) {
-                  controller.update((val) {
-                    if (val != null) {
-                      val.updateStatus(row.letters[i], row.lettersStatus[i]);
-                    }
-                  });
+                controller.updateStatus(row);
+              } else {
+                final row = board.rowAt(board.currentRowIndex);
+                controller.updateStatus(row);
+                await Future.delayed(const Duration(milliseconds: 350));
+                if (game.value.currentGameStatus == GameStatus.win) {
+                  Get.dialog(
+                    EndGameDialog(
+                      Statistic(
+                        elapsedTime,
+                        true,
+                        game.value.board.currentRowIndex + 1,
+                        game.value.wordle,
+                      ),
+                    ),
+                  );
+                } else if (game.value.currentGameStatus == GameStatus.lose) {
+                  Get.dialog(
+                    EndGameDialog(
+                      Statistic(
+                        elapsedTime,
+                        false,
+                        game.value.board.currentRowIndex + 1,
+                        game.value.wordle,
+                      ),
+                    ),
+                  );
                 }
               }
             }
