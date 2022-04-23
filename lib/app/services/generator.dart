@@ -14,7 +14,7 @@ class Generator {
   final List<String> usedWord = [];
 
   String generateWordOfTheDay() {
-    var word = '';
+    var word = 'HORSE';
     var randomNumber = Random();
     while (word.isEmpty && !usedWord.contains(word)) {
       final words = nouns.where((e) => e.length == 5);
