@@ -1,9 +1,9 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wordle/app/models/board.dart';
 import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/models/letter_status.dart';
+import 'package:wordle/app/services/generator.dart';
 
 class Game {
   late final String wordle;
@@ -37,7 +37,7 @@ class Game {
     return lettersStatus;
   }
 
-  bool submit() {
+  Future<bool> submit() async {
     if (!board.currentRow.isFilled) {
       Get.snackbar(
         'Warning',
@@ -46,8 +46,10 @@ class Game {
         margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
       );
     } else if (board.currentRowIndex < board.maxTries) {
-      print(nouns);
-      if (!nouns.contains(board.currentRow.toString().toLowerCase())) {
+      final ok = Generator().dictionary.allWords.contains(
+            board.currentRow.toString().toLowerCase(),
+          );
+      if (!ok) {
         Get.snackbar(
           'Warning',
           'Word does not exists!',

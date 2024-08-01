@@ -67,7 +67,7 @@ class GameBoardController extends GetxController {
       } else if (key == 'ENTER') {
         game.update((val) async {
           if (val != null) {
-            final ok = val.submit();
+            final ok = await val.submit();
             if (ok) {
               final board = game.value.board;
               if (game.value.currentGameStatus == GameStatus.onGoing) {
@@ -110,7 +110,7 @@ class GameBoardController extends GetxController {
   }
 
   void onKey(KeyEvent event) {
-    if (event.runtimeType == RawKeyDownEvent) {
+    if (event.runtimeType == KeyDownEvent) {
       var key = event.logicalKey;
       keyPressed.value = key.keyLabel;
       boardInput(keyPressed.value);

@@ -8,10 +8,10 @@ environment:
 dependencies: 
   cupertino_icons: ^1.0.2
   get: 4.6.1
-  english_words: ^4.0.0
   jiffy: ^5.0.0
   flutter:
     sdk: flutter
+  all_english_words: ^1.0.3
 
 dev_dependencies: 
   flutter_lints: ^1.0.0
