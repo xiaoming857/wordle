@@ -46,6 +46,7 @@ class Game {
         margin: const EdgeInsets.only(top: 25, left: 25, right: 25),
       );
     } else if (board.currentRowIndex < board.maxTries) {
+      print(nouns);
       if (!nouns.contains(board.currentRow.toString().toLowerCase())) {
         Get.snackbar(
           'Warning',
