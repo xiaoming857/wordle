@@ -73,11 +73,16 @@ class _VirtualKeyButtonState extends State<VirtualKeyButton> {
             }
             return BorderSide(color: color, width: 1);
           }),
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.all(0),
+          ),
+          shape: MaterialStateProperty.all(
+            const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
         ),
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: widget.child,
-        ),
+        child: widget.child,
         onPressed: widget.onPressed,
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:wordle/app/models/game_status.dart';
 import 'package:wordle/app/widgets/game_board_row.dart';
@@ -12,6 +11,7 @@ class GameBoardView extends GetView<GameBoardController> {
 
   @override
   Widget build(BuildContext context) {
+    final topPadding = MediaQuery.of(context).padding.top;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTapUp: (_) => controller.requestFocus(),
@@ -20,7 +20,7 @@ class GameBoardView extends GetView<GameBoardController> {
         body: Column(
           children: [
             Card(
-              margin: EdgeInsets.zero,
+              margin: EdgeInsets.only(top: topPadding),
               shape: Border.all(width: 0, color: Colors.transparent),
               child: Container(
                 padding: const EdgeInsets.symmetric(
@@ -57,63 +57,60 @@ class GameBoardView extends GetView<GameBoardController> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 32.0),
-                    child: SizedBox(
-                      height: 50,
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text('Elapsed Time'),
-                                const SizedBox(height: 5.0),
-                                Obx(() {
-                                  return Text(
-                                    controller.elapsedTime.join(':'),
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                }),
-                              ],
-                            ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text('Elapsed Time'),
+                              const SizedBox(height: 5.0),
+                              Obx(() {
+                                return Text(
+                                  controller.elapsedTime.join(':'),
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ],
                           ),
-                          const VerticalDivider(
-                            indent: 5,
-                            endIndent: 5,
+                        ),
+                        const VerticalDivider(
+                          indent: 5,
+                          endIndent: 5,
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Key pressed',
+                              ),
+                              const SizedBox(height: 5.0),
+                              Obx(() {
+                                return Text(
+                                  (controller.keyPressed.isEmpty)
+                                      ? ''
+                                      : controller.keyPressed.value,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }),
+                            ],
                           ),
-                          Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  'Key pressed',
-                                ),
-                                const SizedBox(height: 5.0),
-                                Obx(() {
-                                  return Text(
-                                    (controller.keyPressed.isEmpty)
-                                        ? ''
-                                        : controller.keyPressed.value,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                }),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   // TODO: Create focus area
-                  RawKeyboardListener(
+                  KeyboardListener(
                     autofocus: true,
                     focusNode: controller.focusNode,
-                    onKey: controller.onKey,
+                    onKeyEvent: controller.onKey,
                     child: Obx(() {
                       final game = controller.game.value;
                       final board = game.board;
@@ -136,18 +133,19 @@ class GameBoardView extends GetView<GameBoardController> {
               ),
             ),
             Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: VirtualKeyboard(
-                  controller.controller,
-                  onLetterKeyPressed: controller.boardInput,
-                  onEnterPressed: () => controller.boardInput('ENTER'),
-                  onBackspacePressed: () => controller.boardInput('BACKSPACE'),
-                  onKeyPressed: () => controller.requestFocus(),
-                ),
+              child :Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  VirtualKeyboard(
+                    controller.controller,
+                    onLetterKeyPressed: controller.boardInput,
+                    onEnterPressed: () => controller.boardInput('ENTER'),
+                    onBackspacePressed: () => controller.boardInput('BACKSPACE'),
+                    onKeyPressed: () => controller.requestFocus(),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 64.0),
           ],
         ),
       ),

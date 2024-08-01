@@ -10,8 +10,7 @@ dependencies:
   get: 4.6.1
   english_words: ^4.0.0
   jiffy: ^5.0.0
-  package_info_plus: ^1.4.2
-  flutter: 
+  flutter:
     sdk: flutter
 
 dev_dependencies: 
@@ -19,6 +18,6 @@ dev_dependencies:
   flutter_test: 
     sdk: flutter
 
-flutter: 
+flutter:
   uses-material-design: true
 

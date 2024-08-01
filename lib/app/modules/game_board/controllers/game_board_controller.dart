@@ -17,6 +17,7 @@ class GameBoardController extends GetxController {
   late final Timer timer;
   late final elapsedTime = ['00', '00', '00'].obs;
   final focusNode = FocusNode();
+
   void requestFocus() => focusNode.requestFocus();
 
   final controller = VirtualKeyboardController();
@@ -53,12 +54,14 @@ class GameBoardController extends GetxController {
         game.update((val) {
           if (val != null) {
             val.board.currentRow.inputLetter(key);
+            keyPressed.value = key;
           }
         });
       } else if (key == 'BACKSPACE') {
         game.update((val) {
           if (val != null) {
             val.board.currentRow.removeLetter();
+            keyPressed.value = key;
           }
         });
       } else if (key == 'ENTER') {
@@ -101,11 +104,12 @@ class GameBoardController extends GetxController {
             }
           }
         });
+        keyPressed.value = key;
       }
     }
   }
 
-  void onKey(RawKeyEvent event) {
+  void onKey(KeyEvent event) {
     if (event.runtimeType == RawKeyDownEvent) {
       var key = event.logicalKey;
       keyPressed.value = key.keyLabel;
@@ -159,7 +163,12 @@ class GameBoardController extends GetxController {
                   height: 45,
                   child: ElevatedButton(
                     onPressed: () => Get.offAllNamed(Routes.HOME),
-                    child: const Text('Quit'),
+                    child: const Text(
+                      'Quit',
+                      style: TextStyle(
+                        color: Colors.white70,
+                      ),
+                    ),
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
                   ),
